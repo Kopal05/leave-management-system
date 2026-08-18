@@ -1,0 +1,108 @@
+<div class="page-container">
+
+  <div class="empty-state" *ngIf="loading()">
+    <mat-spinner style="margin: 0 auto;"></mat-spinner>
+  </div>
+
+  <ng-container *ngIf="!loading() && dashboard() as d">
+
+    <h2 class="section-title">
+      Welcome, {{ auth.currentUser()?.name }}
+      <span class="role-badge">{{ auth.currentUser()?.role }}</span>
+    </h2>
+
+    <div class="quick-actions">
+      <a mat-raised-button color="primary" routerLink="/apply-leave">
+        <mat-icon>add</mat-icon> Apply Leave
+      </a>
+      <a mat-stroked-button routerLink="/team-calendar">
+        <mat-icon>calendar_month</mat-icon> Team Calendar
+      </a>
+      <a mat-stroked-button routerLink="/manage-users" *ngIf="auth.isAdmin()">
+        <mat-icon>group</mat-icon> Manage Users
+      </a>
+    </div>
+
+    <!-- Upcoming Leaves -->
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title>{{ auth.isAdmin() ? 'Upcoming Leaves (All Employees)' : 'My Upcoming Leaves' }}</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <table mat-table [dataSource]="d.upcomingLeaves" class="full-width" *ngIf="d.upcomingLeaves.length; else noUpcoming">
+          <ng-container matColumnDef="userName">
+            <th mat-header-cell *matHeaderCellDef>Employee</th>
+            <td mat-cell *matCellDef="let l">{{ l.userName }}</td>
+          </ng-container>
+          <ng-container matColumnDef="title">
+            <th mat-header-cell *matHeaderCellDef>Title</th>
+            <td mat-cell *matCellDef="let l">{{ l.title }}</td>
+          </ng-container>
+          <ng-container matColumnDef="startDate">
+            <th mat-header-cell *matHeaderCellDef>Start</th>
+            <td mat-cell *matCellDef="let l">{{ l.startDate }}</td>
+          </ng-container>
+          <ng-container matColumnDef="endDate">
+            <th mat-header-cell *matHeaderCellDef>End</th>
+            <td mat-cell *matCellDef="let l">{{ l.endDate }}</td>
+          </ng-container>
+          <ng-container matColumnDef="status">
+            <th mat-header-cell *matHeaderCellDef>Status</th>
+            <td mat-cell *matCellDef="let l">
+              <span [class]="l.status === 'PLANNED' ? 'status-planned' : 'status-cancelled'">{{ l.status }}</span>
+            </td>
+          </ng-container>
+          <tr mat-header-row *matHeaderRowDef="upcomingColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: upcomingColumns;"></tr>
+        </table>
+        <ng-template #noUpcoming>
+          <div class="empty-state">No upcoming leaves.</div>
+        </ng-template>
+      </mat-card-content>
+    </mat-card>
+
+    <!-- Admin-only: Overlap Warnings -->
+    <mat-card *ngIf="auth.isAdmin()">
+      <mat-card-header>
+        <mat-card-title>Overlapping Leave Warnings</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div *ngIf="d.overlapWarnings?.length; else noOverlaps">
+          <div class="warning-banner" *ngFor="let w of d.overlapWarnings">
+            <strong>{{ w.employeeOneName }}</strong> and <strong>{{ w.employeeTwoName }}</strong>
+            are both on leave between {{ w.overlapStart }} and {{ w.overlapEnd }}.
+          </div>
+        </div>
+        <ng-template #noOverlaps>
+          <div class="empty-state">No overlapping leaves detected.</div>
+        </ng-template>
+      </mat-card-content>
+    </mat-card>
+
+    <!-- Admin-only: All Employees -->
+    <mat-card *ngIf="auth.isAdmin()">
+      <mat-card-header>
+        <mat-card-title>All Employees</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <table mat-table [dataSource]="d.allEmployees || []" class="full-width">
+          <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef>Name</th>
+            <td mat-cell *matCellDef="let u">{{ u.name }}</td>
+          </ng-container>
+          <ng-container matColumnDef="email">
+            <th mat-header-cell *matHeaderCellDef>Email</th>
+            <td mat-cell *matCellDef="let u">{{ u.email }}</td>
+          </ng-container>
+          <ng-container matColumnDef="role">
+            <th mat-header-cell *matHeaderCellDef>Role</th>
+            <td mat-cell *matCellDef="let u">{{ u.role }}</td>
+          </ng-container>
+          <tr mat-header-row *matHeaderRowDef="employeeColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: employeeColumns;"></tr>
+        </table>
+      </mat-card-content>
+    </mat-card>
+
+  </ng-container>
+</div>

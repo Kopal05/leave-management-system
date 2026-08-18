@@ -1,0 +1,10 @@
+.full-width {
+  width: 100%;
+}
+
+.hint {
+  color: #757575;
+  font-size: 13px;
+  margin-top: -4px;
+  margin-bottom: 16px;
+}

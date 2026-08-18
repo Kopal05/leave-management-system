@@ -1,0 +1,28 @@
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 500;
+  margin-right: 24px;
+}
+
+.nav-links {
+  display: flex;
+  gap: 4px;
+}
+
+.spacer {
+  flex: 1 1 auto;
+}
+
+.user-info {
+  margin-right: 12px;
+  font-size: 14px;
+  opacity: 0.9;
+}
+
+@media (max-width: 900px) {
+  .nav-links {
+    display: none;
+  }
+}

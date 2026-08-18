@@ -1,0 +1,30 @@
+<div class="page-container">
+  <div class="header-row">
+    <h2 class="section-title">{{ auth.isAdmin() ? 'Team Calendar' : 'Leave Calendar' }}</h2>
+    <div class="nav-controls">
+      <button mat-icon-button (click)="previousMonth()"><mat-icon>chevron_left</mat-icon></button>
+      <span class="month-label">{{ monthLabel() }}</span>
+      <button mat-icon-button (click)="nextMonth()"><mat-icon>chevron_right</mat-icon></button>
+      <button mat-stroked-button (click)="today()">Today</button>
+    </div>
+  </div>
+
+  <mat-card>
+    <mat-card-content>
+      <div class="calendar-grid">
+        <div class="weekday-label" *ngFor="let d of weekDayLabels">{{ d }}</div>
+
+        <div class="day-cell" *ngFor="let cell of calendarCells()" [class.empty-cell]="!cell.date" [class.today-cell]="cell.isToday">
+          <div class="day-number" *ngIf="cell.date">{{ cell.date.getDate() }}</div>
+          <div class="leave-chip" *ngFor="let e of cell.entries" [title]="e.title">
+            {{ e.employeeName }}
+          </div>
+        </div>
+      </div>
+
+      <div class="empty-state" *ngIf="!loading() && allEntries().length === 0">
+        No planned leaves to show on the calendar.
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

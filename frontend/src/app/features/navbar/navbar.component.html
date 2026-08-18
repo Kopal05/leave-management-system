@@ -1,0 +1,23 @@
+<mat-toolbar color="primary" *ngIf="auth.isLoggedIn()">
+  <span class="brand">
+    <mat-icon>event_available</mat-icon>
+    Leave Management
+  </span>
+
+  <span class="nav-links">
+    <a mat-button routerLink="/dashboard">Dashboard</a>
+    <a mat-button routerLink="/apply-leave">Apply Leave</a>
+    <a mat-button routerLink="/my-leaves">My Leaves</a>
+    <a mat-button routerLink="/team-calendar">{{ auth.isAdmin() ? 'Team Calendar' : 'Leave Calendar' }}</a>
+    <a mat-button routerLink="/manage-users" *ngIf="auth.isAdmin()">Manage Users</a>
+  </span>
+
+  <span class="spacer"></span>
+
+  <span class="user-info" *ngIf="auth.currentUser() as user">
+    {{ user.name }} ({{ user.role }})
+  </span>
+  <button mat-icon-button (click)="logout()" aria-label="Logout" matTooltip="Logout">
+    <mat-icon>logout</mat-icon>
+  </button>
+</mat-toolbar>
