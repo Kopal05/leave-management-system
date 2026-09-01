@@ -20,6 +20,8 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
+    private static final String ALLOWED_EMAIL_DOMAIN = "@hcltech.com";
+
     public List<UserResponse> getAllUsers() {
         return userRepository.findAll().stream()
                 .map(this::toResponse)
@@ -31,9 +33,13 @@ public class UserService {
     }
 
     public UserResponse createUser(UserRequest request) {
+
+        validateCompanyEmail(request.getEmail());
+
         if (userRepository.existsByEmail(request.getEmail())) {
             throw new BadRequestException("A user with this email already exists");
         }
+
         if (request.getPassword() == null || request.getPassword().isBlank()) {
             throw new BadRequestException("Password is required when creating a user");
         }
@@ -49,9 +55,12 @@ public class UserService {
     }
 
     public UserResponse updateUser(Long id, UserRequest request) {
+
+        validateCompanyEmail(request.getEmail());
+
         User user = findUserOrThrow(id);
 
-        // If email changed, make sure the new one isn't already taken by someone else
+        // If email changed, make sure the new one isn't already taken
         if (!user.getEmail().equalsIgnoreCase(request.getEmail())
                 && userRepository.existsByEmail(request.getEmail())) {
             throw new BadRequestException("A user with this email already exists");
@@ -75,9 +84,19 @@ public class UserService {
 
     // ---------- helpers ----------
 
+    private void validateCompanyEmail(String email) {
+        if (email == null ||
+                !email.trim().toLowerCase().endsWith(ALLOWED_EMAIL_DOMAIN)) {
+            throw new BadRequestException(
+                    "Only emails from " + ALLOWED_EMAIL_DOMAIN + " are allowed"
+            );
+        }
+    }
+
     private User findUserOrThrow(Long id) {
         return userRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + id));
+                .orElseThrow(() ->
+                        new ResourceNotFoundException("User not found with id: " + id));
     }
 
     private Role parseRole(String role) {
