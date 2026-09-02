@@ -1,23 +1,176 @@
-<mat-toolbar color="primary" *ngIf="auth.isLoggedIn()">
-  <span class="brand">
-    <mat-icon>event_available</mat-icon>
-    Leave Management
-  </span>
+<mat-toolbar *ngIf="showNavbar && auth.isLoggedIn()" class="app-toolbar">
 
-  <span class="nav-links">
-    <a mat-button routerLink="/dashboard">Dashboard</a>
-    <a mat-button routerLink="/apply-leave">Apply Leave</a>
-    <a mat-button routerLink="/my-leaves">My Leaves</a>
-    <a mat-button routerLink="/team-calendar">{{ auth.isAdmin() ? 'Team Calendar' : 'Leave Calendar' }}</a>
-    <a mat-button routerLink="/manage-users" *ngIf="auth.isAdmin()">Manage Users</a>
-  </span>
+  <!-- Brand -->
+  <a class="brand" routerLink="/dashboard">
+    <div class="brand-icon">
+      <mat-icon>event_available</mat-icon>
+    </div>
 
+    <div class="brand-text">
+      <span class="brand-title">Leave Management</span>
+      <span class="brand-subtitle">LMS</span>
+    </div>
+  </a>
+
+
+  <!-- Desktop Navigation -->
+  <nav class="nav-links">
+
+    <a
+      mat-button
+      routerLink="/dashboard"
+      routerLinkActive="active-link"
+      [routerLinkActiveOptions]="{ exact: true }">
+      <mat-icon>dashboard</mat-icon>
+      <span>Dashboard</span>
+    </a>
+
+    <a
+      mat-button
+      routerLink="/apply-leave"
+      routerLinkActive="active-link">
+      <mat-icon>event</mat-icon>
+      <span>Apply Leave</span>
+    </a>
+
+    <a
+      mat-button
+      routerLink="/my-leaves"
+      routerLinkActive="active-link">
+      <mat-icon>history</mat-icon>
+      <span>My Leaves</span>
+    </a>
+
+    <a
+      mat-button
+      routerLink="/team-calendar"
+      routerLinkActive="active-link">
+      <mat-icon>calendar_month</mat-icon>
+      <span>
+        {{ auth.isAdmin() ? 'Team Calendar' : 'Leave Calendar' }}
+      </span>
+    </a>
+
+    <!-- Admin -->
+    <a
+      mat-button
+      routerLink="/manage-users"
+      routerLinkActive="active-link"
+      *ngIf="auth.isAdmin()">
+      <mat-icon>manage_accounts</mat-icon>
+      <span>Manage Users</span>
+    </a>
+
+    <a
+      mat-button
+      routerLink="/registration-requests"
+      routerLinkActive="active-link"
+      *ngIf="auth.isAdmin()">
+      <mat-icon>person_add</mat-icon>
+      <span>Requests</span>
+    </a>
+
+  </nav>
+
+
+  <!-- Right Side -->
   <span class="spacer"></span>
 
-  <span class="user-info" *ngIf="auth.currentUser() as user">
-    {{ user.name }} ({{ user.role }})
-  </span>
-  <button mat-icon-button (click)="logout()" aria-label="Logout" matTooltip="Logout">
+  <ng-container *ngIf="auth.currentUser() as user">
+
+    <div class="user-profile">
+
+      <div class="user-avatar">
+        {{ user.name.charAt(0).toUpperCase() }}
+      </div>
+
+      <div class="user-details">
+        <span class="user-name">{{ user.name }}</span>
+        <span class="user-role">{{ user.role }}</span>
+      </div>
+
+    </div>
+
+  </ng-container>
+
+
+  <!-- Logout -->
+  <button
+    mat-icon-button
+    class="logout-btn"
+    (click)="logout()"
+    aria-label="Logout"
+    matTooltip="Logout">
+
     <mat-icon>logout</mat-icon>
+
   </button>
+
+
+  <!-- Mobile Menu -->
+  <button
+    mat-icon-button
+    class="mobile-menu-btn"
+    [matMenuTriggerFor]="mobileMenu"
+    aria-label="Open navigation menu">
+
+    <mat-icon>menu</mat-icon>
+
+  </button>
+
+
+  <mat-menu #mobileMenu="matMenu">
+
+    <a
+      mat-menu-item
+      routerLink="/dashboard">
+      <mat-icon>dashboard</mat-icon>
+      <span>Dashboard</span>
+    </a>
+
+    <a
+      mat-menu-item
+      routerLink="/apply-leave">
+      <mat-icon>event</mat-icon>
+      <span>Apply Leave</span>
+    </a>
+
+    <a
+      mat-menu-item
+      routerLink="/my-leaves">
+      <mat-icon>history</mat-icon>
+      <span>My Leaves</span>
+    </a>
+
+    <a
+      mat-menu-item
+      routerLink="/team-calendar">
+      <mat-icon>calendar_month</mat-icon>
+      <span>
+        {{ auth.isAdmin() ? 'Team Calendar' : 'Leave Calendar' }}
+      </span>
+    </a>
+
+    <ng-container *ngIf="auth.isAdmin()">
+
+      <mat-divider></mat-divider>
+
+      <a
+        mat-menu-item
+        routerLink="/manage-users">
+        <mat-icon>manage_accounts</mat-icon>
+        <span>Manage Users</span>
+      </a>
+
+      <a
+        mat-menu-item
+        routerLink="/registration-requests">
+        <mat-icon>person_add</mat-icon>
+        <span>Requests</span>
+      </a>
+
+    </ng-container>
+
+  </mat-menu>
+
 </mat-toolbar>

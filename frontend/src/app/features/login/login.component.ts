@@ -8,14 +8,21 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { AuthService } from '../../core/services/auth.service';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-login',
   standalone: true,
   imports: [
-    CommonModule, ReactiveFormsModule, MatCardModule, MatFormFieldModule,
-    MatInputModule, MatButtonModule, MatProgressSpinnerModule
-  ],
+  CommonModule,
+  ReactiveFormsModule,
+  MatCardModule,
+  MatFormFieldModule,
+  MatInputModule,
+  MatButtonModule,
+  MatProgressSpinnerModule,
+  MatIconModule
+],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
 })
@@ -23,6 +30,7 @@ export class LoginComponent {
 
   loading = signal(false);
   errorMessage = signal<string | null>(null);
+  hidePassword = signal(true);
 
   form: ReturnType<FormBuilder['group']>;
 
@@ -52,5 +60,9 @@ constructor(private fb: FormBuilder, private auth: AuthService, private router: 
         this.errorMessage.set(err?.error?.message || 'Invalid email or password');
       }
     });
+  }
+
+  goToRegister(): void {
+  this.router.navigate(['/register']);
   }
 }

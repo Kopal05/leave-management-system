@@ -1,0 +1,233 @@
+<div class="register-page">
+
+  <div class="auth-card">
+
+    <!-- Brand -->
+    <div class="brand-section">
+
+      <div class="brand-icon">
+        <mat-icon>person_add</mat-icon>
+      </div>
+
+      <div>
+        <h1>Leave Management System</h1>
+        <p>Plan your leaves with ease</p>
+      </div>
+
+    </div>
+
+
+    <!-- Registration Form -->
+    <div class="form-section" *ngIf="!successMessage()">
+
+      <h2>Create your account</h2>
+
+      <p class="form-subtitle">
+        Register with your company account
+      </p>
+
+
+      <form [formGroup]="form" (ngSubmit)="submit()">
+
+        <!-- Name -->
+        <mat-form-field appearance="outline" class="full-width">
+
+          <mat-label>Full Name</mat-label>
+
+          <mat-icon matPrefix>person_outline</mat-icon>
+
+          <input
+            matInput
+            type="text"
+            formControlName="name"
+            placeholder="Enter your full name"
+          >
+
+          <mat-error *ngIf="form.get('name')?.hasError('required')">
+            Name is required
+          </mat-error>
+
+        </mat-form-field>
+
+
+        <!-- Email -->
+        <mat-form-field appearance="outline" class="full-width">
+
+          <mat-label>Company Email</mat-label>
+
+          <mat-icon matPrefix>email</mat-icon>
+
+          <input
+            matInput
+            type="email"
+            formControlName="email"
+            placeholder="you@hcltech.com"
+          >
+
+          <mat-error *ngIf="form.get('email')?.hasError('required')">
+            Email is required
+          </mat-error>
+
+          <mat-error *ngIf="form.get('email')?.hasError('email')">
+            Enter a valid email
+          </mat-error>
+
+        </mat-form-field>
+
+
+        <!-- Password -->
+        <mat-form-field appearance="outline" class="full-width">
+
+          <mat-label>Password</mat-label>
+
+          <mat-icon matPrefix>lock_outline</mat-icon>
+
+          <input
+            matInput
+            [type]="hidePassword() ? 'password' : 'text'"
+            formControlName="password"
+            placeholder="Create a password"
+          >
+
+          <button
+            mat-icon-button
+            matSuffix
+            type="button"
+            (click)="hidePassword.set(!hidePassword())"
+            [attr.aria-label]="hidePassword() ? 'Show password' : 'Hide password'"
+          >
+            <mat-icon>
+              {{ hidePassword() ? 'visibility' : 'visibility_off' }}
+            </mat-icon>
+          </button>
+
+          <mat-error *ngIf="form.get('password')?.hasError('required')">
+            Password is required
+          </mat-error>
+
+          <mat-error *ngIf="form.get('password')?.hasError('minlength')">
+            Password must be at least 6 characters
+          </mat-error>
+
+        </mat-form-field>
+
+
+        <!-- Confirm Password -->
+        <mat-form-field appearance="outline" class="full-width">
+
+          <mat-label>Confirm Password</mat-label>
+
+          <mat-icon matPrefix>lock_outline</mat-icon>
+
+          <input
+            matInput
+            [type]="hideConfirmPassword() ? 'password' : 'text'"
+            formControlName="confirmPassword"
+            placeholder="Confirm your password"
+          >
+
+          <button
+            mat-icon-button
+            matSuffix
+            type="button"
+            (click)="hideConfirmPassword.set(!hideConfirmPassword())"
+            [attr.aria-label]="hideConfirmPassword() ? 'Show password' : 'Hide password'"
+          >
+            <mat-icon>
+              {{ hideConfirmPassword() ? 'visibility' : 'visibility_off' }}
+            </mat-icon>
+          </button>
+
+          <mat-error *ngIf="form.get('confirmPassword')?.hasError('required')">
+            Please confirm your password
+          </mat-error>
+
+        </mat-form-field>
+
+
+        <!-- Error -->
+        <div
+          class="error-message"
+          *ngIf="errorMessage()"
+        >
+          <mat-icon>error_outline</mat-icon>
+          <span>{{ errorMessage() }}</span>
+        </div>
+
+
+        <!-- Submit -->
+        <button
+          mat-raised-button
+          color="primary"
+          class="full-width register-btn"
+          type="submit"
+          [disabled]="loading()"
+        >
+
+          <mat-spinner
+            *ngIf="loading()"
+            diameter="20"
+          ></mat-spinner>
+
+          <span *ngIf="!loading()">
+            Create Account
+          </span>
+
+        </button>
+
+      </form>
+
+
+      <!-- Login -->
+      <div class="login-section">
+
+        <span>Already have an account?</span>
+
+        <button
+          mat-button
+          color="primary"
+          type="button"
+          (click)="goToLogin()"
+        >
+          Sign In
+        </button>
+
+      </div>
+
+    </div>
+
+
+    <!-- Success State -->
+    <div class="success-section" *ngIf="successMessage()">
+
+      <div class="success-icon">
+        <mat-icon>check</mat-icon>
+      </div>
+
+      <h2>Request Submitted</h2>
+
+      <p class="success-text">
+        {{ successMessage() }}
+      </p>
+
+      <p class="success-info">
+        Your account will be available after the administrator approves
+        your registration request.
+      </p>
+
+      <button
+        mat-raised-button
+        color="primary"
+        class="back-btn"
+        type="button"
+        (click)="backToRegistration()"
+      >
+        <mat-icon>arrow_back</mat-icon>
+        Back to Registration
+      </button>
+
+    </div>
+
+  </div>
+
+</div>

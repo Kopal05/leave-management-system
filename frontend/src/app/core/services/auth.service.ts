@@ -34,7 +34,17 @@ export class AuthService {
         }
       }));
   }
+  register(request: {
+  name: string;
+  email: string;
+  password: string;
+}): Observable<ApiResponse<void>> {
 
+  return this.http.post<ApiResponse<void>>(
+    `${environment.apiUrl}/auth/register`,
+    request
+  );
+}
   logout(): void {
     localStorage.removeItem(TOKEN_KEY);
     localStorage.removeItem(USER_KEY);

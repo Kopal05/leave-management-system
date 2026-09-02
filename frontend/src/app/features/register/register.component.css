@@ -1,23 +1,23 @@
-.login-page {
+.register-page {
   min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 32px 16px;
+  box-sizing: border-box;
 
   background:
-    radial-gradient(circle at top left, #e8f0ff 0%, transparent 35%),
-    radial-gradient(circle at bottom right, #edf7f2 0%, transparent 35%),
+    radial-gradient(circle at top right, #e8f0ff 0%, transparent 35%),
+    radial-gradient(circle at bottom left, #edf7f2 0%, transparent 35%),
     #f6f8fb;
-
-  box-sizing: border-box;
 }
 
 .auth-card {
   width: 100%;
-  max-width: 430px;
+  max-width: 440px;
 
   background: #ffffff;
+
   border: 1px solid #e5e9f0;
   border-radius: 16px;
 
@@ -63,9 +63,9 @@
 }
 
 .brand-icon mat-icon {
-  font-size: 26px;
-  width: 26px;
-  height: 26px;
+  font-size: 25px;
+  width: 25px;
+  height: 25px;
 }
 
 .brand-section h1 {
@@ -130,9 +130,9 @@ button[matSuffix] {
 }
 
 
-/* ---------- Login button ---------- */
+/* ---------- Register Button ---------- */
 
-.login-btn {
+.register-btn {
   height: 46px;
 
   margin-top: 10px;
@@ -145,7 +145,7 @@ button[matSuffix] {
   box-shadow: none;
 }
 
-.login-btn mat-spinner {
+.register-btn mat-spinner {
   display: inline-block;
   margin: 0 auto;
 }
@@ -178,9 +178,9 @@ button[matSuffix] {
 }
 
 
-/* ---------- Register ---------- */
+/* ---------- Login ---------- */
 
-.register-section {
+.login-section {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -197,9 +197,85 @@ button[matSuffix] {
   font-size: 14px;
 }
 
-.register-section button {
+.login-section button {
   font-size: 14px;
   font-weight: 500;
+}
+
+
+/* ---------- Success ---------- */
+
+.success-section {
+  padding: 42px 30px 38px;
+
+  text-align: center;
+}
+
+.success-icon {
+  width: 64px;
+  height: 64px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  margin: 0 auto 18px;
+
+  border-radius: 50%;
+
+  background: #e8f5e9;
+  color: #2e7d32;
+}
+
+.success-icon mat-icon {
+  font-size: 34px;
+  width: 34px;
+  height: 34px;
+}
+
+.success-section h2 {
+  margin: 0;
+
+  font-size: 24px;
+  font-weight: 600;
+
+  color: #111827;
+}
+
+.success-text {
+  margin: 12px auto 0;
+
+  max-width: 340px;
+
+  font-size: 14px;
+  line-height: 1.6;
+
+  color: #2e7d32;
+}
+
+.success-info {
+  margin: 14px auto 26px;
+
+  max-width: 350px;
+
+  font-size: 13px;
+  line-height: 1.6;
+
+  color: #6b7280;
+}
+
+.back-btn {
+  height: 44px;
+
+  padding: 0 20px;
+
+  border-radius: 8px;
+
+  box-shadow: none;
+}
+
+.back-btn mat-icon {
+  margin-right: 6px;
 }
 
 
@@ -207,7 +283,7 @@ button[matSuffix] {
 
 @media (max-width: 480px) {
 
-  .login-page {
+  .register-page {
     padding: 20px 12px;
   }
 
@@ -223,8 +299,12 @@ button[matSuffix] {
     padding: 24px 20px;
   }
 
-  .form-section h2 {
-    font-size: 22px;
+  .success-section {
+    padding: 36px 20px 30px;
   }
 
+  .form-section h2,
+  .success-section h2 {
+    font-size: 22px;
+  }
 }
