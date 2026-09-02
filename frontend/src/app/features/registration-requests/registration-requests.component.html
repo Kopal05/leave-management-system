@@ -1,0 +1,193 @@
+<div class="page-container">
+
+  <!-- Page Header -->
+  <div class="header-row">
+
+    <div>
+      <h2 class="section-title">Registration Requests</h2>
+      <p class="section-subtitle">
+        Review and manage pending user registration requests
+      </p>
+    </div>
+
+    <button
+      mat-stroked-button
+      type="button"
+      (click)="loadRequests()"
+      [disabled]="loading()"
+    >
+      <mat-icon>refresh</mat-icon>
+      Refresh
+    </button>
+
+  </div>
+
+
+  <!-- Requests Table -->
+  <mat-card class="requests-card">
+
+    <mat-card-content>
+
+      <!-- Loading -->
+      <div class="loading-state" *ngIf="loading()">
+
+        <mat-spinner diameter="38"></mat-spinner>
+
+        <p>Loading registration requests...</p>
+
+      </div>
+
+
+      <!-- Table -->
+      <div
+        class="table-container"
+        *ngIf="!loading() && requests().length"
+      >
+
+        <table
+          mat-table
+          [dataSource]="requests()"
+          class="requests-table"
+        >
+
+          <!-- Number -->
+          <ng-container matColumnDef="no">
+
+            <th mat-header-cell *matHeaderCellDef>
+              No.
+            </th>
+
+            <td mat-cell *matCellDef="let request; let i = index">
+              {{ i + 1 }}
+            </td>
+
+          </ng-container>
+
+
+          <!-- Name -->
+          <ng-container matColumnDef="name">
+
+            <th mat-header-cell *matHeaderCellDef>
+              Name
+            </th>
+
+            <td mat-cell *matCellDef="let request">
+
+              <div class="user-name">
+                <div class="avatar">
+                  {{ request.name.charAt(0).toUpperCase() }}
+                </div>
+
+                <span>{{ request.name }}</span>
+              </div>
+
+            </td>
+
+          </ng-container>
+
+
+          <!-- Email -->
+          <ng-container matColumnDef="email">
+
+            <th mat-header-cell *matHeaderCellDef>
+              Email
+            </th>
+
+            <td mat-cell *matCellDef="let request">
+              {{ request.email }}
+            </td>
+
+          </ng-container>
+
+
+          <!-- Requested At -->
+          <ng-container matColumnDef="requestedAt">
+
+            <th mat-header-cell *matHeaderCellDef>
+              Requested
+            </th>
+
+            <td mat-cell *matCellDef="let request">
+              {{ request.requestedAt | date:'medium' }}
+            </td>
+
+          </ng-container>
+
+
+          <!-- Actions -->
+          <ng-container matColumnDef="actions">
+
+            <th mat-header-cell *matHeaderCellDef>
+              Actions
+            </th>
+
+            <td mat-cell *matCellDef="let request">
+
+              <div class="action-buttons">
+
+                <button
+                  mat-stroked-button
+                  class="approve-btn"
+                  type="button"
+                  (click)="approveRequest(request)"
+                >
+                  <mat-icon>check</mat-icon>
+                  Approve
+                </button>
+
+                <button
+                  mat-stroked-button
+                  class="reject-btn"
+                  type="button"
+                  (click)="rejectRequest(request)"
+                >
+                  <mat-icon>close</mat-icon>
+                  Reject
+                </button>
+
+              </div>
+
+            </td>
+
+          </ng-container>
+
+
+          <tr
+            mat-header-row
+            *matHeaderRowDef="columns"
+          ></tr>
+
+          <tr
+            mat-row
+            *matRowDef="let row; columns: columns;"
+          ></tr>
+
+        </table>
+
+      </div>
+
+
+      <!-- Empty State -->
+      <div
+        class="empty-state"
+        *ngIf="!loading() && !requests().length"
+      >
+
+        <div class="empty-icon">
+          <mat-icon>inbox</mat-icon>
+        </div>
+
+        <h3>No Pending Requests</h3>
+
+        <p>
+          There are currently no registration requests
+          waiting for approval.
+        </p>
+
+      </div>
+
+    </mat-card-content>
+
+  </mat-card>
+
+</div>

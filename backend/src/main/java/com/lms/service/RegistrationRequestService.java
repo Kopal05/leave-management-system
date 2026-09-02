@@ -1,6 +1,7 @@
 package com.lms.service;
 
 import com.lms.dto.RegistrationRequestDto;
+import com.lms.dto.RegistrationRequestResponse;
 import com.lms.entity.RegistrationRequest;
 import com.lms.entity.RegistrationStatus;
 import com.lms.entity.Role;
@@ -56,13 +57,21 @@ public class RegistrationRequestService {
     }
 
     // Admin sees only pending requests
-    public List<RegistrationRequest> getPendingRequests() {
+    public List<RegistrationRequestResponse> getPendingRequests() {
 
-        return registrationRequestRepository
-                .findByStatusOrderByRequestedAtDesc(
-                        RegistrationStatus.PENDING
-                );
-    }
+    return registrationRequestRepository
+            .findByStatusOrderByRequestedAtDesc(
+                    RegistrationStatus.PENDING
+            )
+            .stream()
+            .map(request -> RegistrationRequestResponse.builder()
+                    .id(request.getId())
+                    .name(request.getName())
+                    .email(request.getEmail())
+                    .requestedAt(request.getRequestedAt())
+                    .build())
+            .toList();
+}
 
     // Admin approves request
     public void approveRequest(Long id) {

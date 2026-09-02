@@ -1,6 +1,6 @@
 package com.lms.controller;
 
-import com.lms.entity.RegistrationRequest;
+import com.lms.dto.RegistrationRequestResponse;
 import com.lms.service.RegistrationRequestService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -16,8 +16,7 @@ public class AdminRegistrationController {
     private final RegistrationRequestService registrationRequestService;
 
     @GetMapping("/pending")
-    public ResponseEntity<List<RegistrationRequest>> getPendingRequests() {
-
+    public ResponseEntity<List<RegistrationRequestResponse>> getPendingRequests() {
         return ResponseEntity.ok(
                 registrationRequestService.getPendingRequests()
         );

@@ -79,3 +79,10 @@ export interface DashboardResponse {
   allEmployees: AppUser[] | null;
   overlapWarnings: OverlapWarning[] | null;
 }
+
+export interface RegistrationRequest {
+  id: number;
+  name: string;
+  email: string;
+  requestedAt: string;
+}

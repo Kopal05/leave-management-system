@@ -4,7 +4,12 @@ import { adminGuard } from './core/guards/admin.guard';
 
 export const routes: Routes = [
   { path: 'login', loadComponent: () => import('./features/login/login.component').then(m => m.LoginComponent) },
-
+  {
+  path: 'register',
+  loadComponent: () =>
+    import('./features/register/register.component')
+      .then(m => m.RegisterComponent)
+  },
   {
     path: 'dashboard',
     canActivate: [authGuard],
@@ -14,6 +19,13 @@ export const routes: Routes = [
     path: 'manage-users',
     canActivate: [adminGuard],
     loadComponent: () => import('./features/manage-users/manage-users.component').then(m => m.ManageUsersComponent)
+  },
+  {
+  path: 'registration-requests',
+  canActivate: [adminGuard],
+  loadComponent: () =>
+    import('./features/registration-requests/registration-requests.component')
+      .then(m => m.RegistrationRequestsComponent)
   },
   {
     path: 'apply-leave',
